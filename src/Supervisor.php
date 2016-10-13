@@ -5,34 +5,44 @@ namespace Supervisor;
 /**
  * Supervisor API.
  *
+ * Status and Control
  * @method string  getAPIVersion()
  * @method string  getSupervisorVersion()
  * @method string  getIdentification()
  * @method array   getState()
  * @method int getPID()
- * @method string  readLog(integer $offset, integer $limit)
+ * @method string  readLog(integer $offset, integer $length)
  * @method bool clearLog()
  * @method bool shutdown()
  * @method bool restart()
- * @method array   getProcessInfo(string $processName)
+ *
+ * Process Control
+ * @method array   getProcessInfo(string $name)
  * @method array   getAllProcessInfo()
  * @method bool startProcess(string $name, boolean $wait = true)
  * @method bool startAllProcesses(boolean $wait = true)
  * @method bool startProcessGroup(string $name, boolean $wait = true)
  * @method bool stopProcess(string $name, boolean $wait = true)
- * @method bool stopAllProcesses(boolean $wait = true)
  * @method bool stopProcessGroup(string $name, boolean $wait = true)
+ * @method bool stopAllProcesses(boolean $wait = true)
+ * @method bool signalProcess(string $name, string $signal)
+ * @method array signalProcessGroup(string $name, string $signal)
+ * @method array signalAllProcesses(string $signal)
  * @method bool sendProcessStdin(string $name, string $chars)
+ * @method bool sendRemoteCommEvent(string $type, string $data)
+ * @method bool reloadConfig()
  * @method bool addProcessGroup(string $name)
  * @method bool removeProcessGroup(string $name)
- * @method string  readProcessStdoutLog(string $name, integer $offset, integer $limit)
- * @method string  readProcessStderrLog(string $name, integer $offset, integer $limit)
- * @method string  tailProcessStdoutLog(string $name, integer $offset, integer $limit)
- * @method string  tailProcessStderrLog(string $name, integer $offset, integer $limit)
+ *
+ * Process Logging
+ * @method string  readProcessStdoutLog(string $name, integer $offset, integer $length)
+ * @method string  readProcessStderrLog(string $name, integer $offset, integer $length)
+ * @method string  tailProcessStdoutLog(string $name, integer $offset, integer $length)
+ * @method string  tailProcessStderrLog(string $name, integer $offset, integer $length)
  * @method bool clearProcessLogs(string $name)
  * @method bool clearAllProcessLogs()
  *
- * @link http://supervisord.org/api.html
+ * @link   http://supervisord.org/api.html
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -95,6 +105,11 @@ class Supervisor
      * Magic __call method.
      *
      * Handles all calls to supervisor namespace
+     *
+     * @param string $method
+     * @param array  $arguments
+     *
+     * @return mixed
      */
     public function __call($method, $arguments)
     {

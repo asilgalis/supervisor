@@ -169,4 +169,56 @@ class Supervisor
 
         return new Process($process);
     }
+
+    /**
+     * Return an array listing the available method names.
+     *
+     * @return array An array of method names available (strings)
+     */
+    public function listMethods()
+    {
+        return $this->connector->call('system', 'listMethods');
+    }
+
+    /**
+     * Return a string showing the method’s documentation.
+     *
+     * @param string $name The name of the method
+     *
+     * @return string The documentation for the method name
+     */
+    public function methodHelp($name)
+    {
+        return $this->connector->call('system', 'methodHelp', [$name]);
+    }
+
+    /**
+     * Return an array describing the method signature in the form [rtype, ptype, ptype...]
+     * where rtype is the return data type of the method,
+     * and ptypes are the parameter data types that the method accepts in method argument order.
+     *
+     * @param string $name The name of the method
+     *
+     * @return array The result
+     */
+    public function methodSignature($name)
+    {
+        return $this->connector->call('system', 'methodSignature', [$name]);
+    }
+
+    /**
+     * Process an array of calls, and return an array of results.
+     * Calls should be structs of the form {‘methodName’: string, ‘params’: array}.
+     * Each result will either be a single-item array containing the result value,
+     * or a struct of the form {‘faultCode’: int, ‘faultString’: string}.
+     * This is useful when you need to make lots of small calls without lots of round trips.
+     *
+     * @param array $calls An array of call requests
+     *
+     * @return array result An array of results
+     */
+    public function multicall(array $calls)
+    {
+        return $this->connector->call('system', 'multicall', [$calls]);
+    }
 }
